@@ -33,3 +33,11 @@ def unauthorized() -> None:
     Raises a 401 error code
     """
     abort(401)
+
+
+@app_views.route('/forbidden/', strict_slashes=False)
+def forbidden() -> None:
+    """
+    Returns custom page for forbidden status
+    """
+    abort(403)
