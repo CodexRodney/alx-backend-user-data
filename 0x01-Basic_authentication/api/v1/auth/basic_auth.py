@@ -3,8 +3,10 @@
 Defines a class BasicAuth
 """
 
+from api.v1.auth.auth import Auth
 
-class BasicAuth():
+
+class BasicAuth(Auth):
     """
     a class BasicAuth
     """
