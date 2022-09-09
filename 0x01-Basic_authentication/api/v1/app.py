@@ -44,6 +44,9 @@ def forbidden(error) -> str:
 
 @app.before_request
 def beforerequest():
+    """
+    Does things before each request
+    """
     if auth is None:
         return
     list1 = ['/api/v1/status/', '/api/v1/unauthorized/',
