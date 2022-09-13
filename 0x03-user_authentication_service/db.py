@@ -34,7 +34,6 @@ class DB:
         """
         Saves a user to the database and returns a user object
         """
-        #session = self._session
         user1 = User()
         user1.email = email
         user1.hashed_password = hashed_password
