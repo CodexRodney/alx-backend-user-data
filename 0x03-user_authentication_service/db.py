@@ -15,7 +15,7 @@ class DB:
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db")
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -34,10 +34,10 @@ class DB:
         """
         Saves a user to the database and returns a user object
         """
-        session = self._session
+        #session = self._session
         user1 = User()
         user1.email = email
         user1.hashed_password = hashed_password
-        session.add(user1)
-        session.commit()
+        self._session.add(user1)
+        self._session.commit()
         return user1
