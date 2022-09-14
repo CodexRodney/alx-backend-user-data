@@ -59,3 +59,19 @@ class DB:
                 raise NoResultFound
             else:
                 return query
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """
+        Uses find_user_by to locate the user to update
+        then updates the user's attributes as passed and
+        returns None
+        """
+        user = self.find_user_by(id=user_id)
+        for x, y in kwargs.items():
+            try:
+                user.__dict__[x] = y
+            except TypeError:
+                raise ValueError
+            else:
+                self._session.add(user)
+                self._session.commit()
