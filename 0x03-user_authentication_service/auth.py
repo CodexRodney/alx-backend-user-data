@@ -5,7 +5,6 @@ Defines a class Auth
 
 from db import DB
 from bcrypt import hashpw, gensalt
-from typing import TypeVar
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -28,15 +27,14 @@ class Auth:
         self._db = DB()
 
     def register_user(self, email: str,
-                      password: str) -> TypeVar('User'):
+                      password: str) -> User:
         """
         Registers a user
         """
         try:
-            (self._db._session.query(User)
-             .filter(User.email == email).one())
+            self._db.find_user_by(email=email)
         except NoResultFound:
-            hash_pwd = _hash_password(password)
+            password = _hash_password(password)
             user = User(email=email, hashed_password=password)
             self._db._session.add(user)
             self._db._session.commit()
