@@ -7,7 +7,6 @@ from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
-from typing import TypeVar
 from user import Base, User
 
 
@@ -32,7 +31,7 @@ class DB:
         return self.__session
 
     def add_user(self, email: str,
-                 hashed_password: str) -> TypeVar('User'):
+                 hashed_password: str) -> User:
         """
         Saves a user to the database and returns a user object
         """
@@ -43,7 +42,7 @@ class DB:
         self._session.commit()
         return user1
 
-    def find_user_by(self, **kwargs) -> TypeVar('User'):
+    def find_user_by(self, **kwargs) -> User:
         """
         Takes in arbitary keyword arguments and returns the
         first row found in the users table as filtered by the
@@ -68,10 +67,9 @@ class DB:
         """
         user = self.find_user_by(id=user_id)
         for x, y in kwargs.items():
-            try:
+            if x in user.__dict__:
                 user.__dict__[x] = y
-            except TypeError:
-                raise ValueError
-            else:
                 self._session.add(user)
                 self._session.commit()
+            else:
+                raise ValueError
