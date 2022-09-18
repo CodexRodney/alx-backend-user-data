@@ -6,6 +6,7 @@ Defines a class Auth
 from db import DB
 from bcrypt import hashpw, gensalt, checkpw
 from user import User
+from uuid import uuid4
 from sqlalchemy.orm.exc import NoResultFound
 
 
@@ -16,10 +17,17 @@ def _hash_password(password: str) -> bytes:
     return hashpw(password.encode('utf-8'), gensalt())
 
 
+def _generate_uuid() -> str:
+    """
+    Returns a string representation of the
+    new UUID
+    """
+    return uuid4()
+
+
 class Auth:
     """Auth class to interact with the authentication database.
     """
-
     def __init__(self) -> None:
         """
         Initializes values
