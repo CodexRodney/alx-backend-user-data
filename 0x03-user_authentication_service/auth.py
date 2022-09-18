@@ -22,7 +22,7 @@ def _generate_uuid() -> str:
     Returns a string representation of the
     new UUID
     """
-    return uuid4()
+    return str(uuid4())
 
 
 class Auth:
@@ -63,3 +63,19 @@ class Auth:
         else:
             return checkpw(password.encode('utf-8'),
                            user.hashed_password)
+
+    def create_session(self, email: str) -> str:
+        """
+        Finds user corresponding to the email
+        generates a new UUID and stores it and returns
+        session ID
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+        except NoResultFound:
+            return
+        else:
+            user.session_id = _generate_uuid()
+            self._db._session.add(user)
+            self._db._session.commit()
+            return user.session_id
